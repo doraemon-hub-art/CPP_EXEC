@@ -1,0 +1,12 @@
+<node>
+  <interface name="com.example.Demo">
+    <method name="Echo">
+      <arg direction="in"  type="s" name="msg"/>
+      <arg direction="out" type="s" name="reply"/>
+    </method>
+    <property name="Counter" type="i" access="read"/>
+    <signal name="Tick">
+      <arg type="i" name="value"/>
+    </signal>
+  </interface>
+</node>

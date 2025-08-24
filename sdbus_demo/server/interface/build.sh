@@ -1,0 +1,1 @@
+sdbus-c++-xml2cpp com.example.Demo.xml --adaptor=com.example.Demo_adaptor.h --proxy=com.example.Demo_proxy.h
