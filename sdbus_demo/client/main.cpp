@@ -1,36 +1,29 @@
-#include <sdbus-c++/sdbus-c++.h>
 #include <iostream>
-#include "../server/interface/com.example.Demo_proxy.h"   // 引入自动生成的 proxy 头文件
+#include <sdbus-c++/sdbus-c++.h>
+#include "proxy.hpp"
 
 int main()
 {
-    using namespace std;
-
-    // 连接 session bus
+    // 连接到 session bus
     auto connection = sdbus::createSessionBusConnection();
 
-    // 创建 proxy
-    auto proxy = com::example::createDemoProxy(*connection, "com.example.Demo", "/com/example/Demo");
+    // 创建底层 proxy
+    auto rawProxy = sdbus::createProxy(*connection, "com.example.Demo", "/com/example/Demo");
+
+    // 用 MyDemoProxy 封装它
+    MyDemoProxy proxy(*rawProxy);
 
     // 调用 Echo 方法
-    string reply = proxy->Echo("Hello D-Bus!");
-    cout << "Echo reply: " << reply << endl;
+    std::string reply = proxy.Echo("Hello D-Bus!");
+    std::cout << "Echo reply: " << reply << std::endl;
 
     // 读取属性 Counter
-    int counter = proxy->Counter();
-    cout << "Counter value: " << counter << endl;
+    int counter = proxy.Counter();
+    std::cout << "Counter value: " << counter << std::endl;
 
-    // 订阅 Tick 信号
-    proxy->uponSignalTick([](int value) {
-        cout << "Received Tick signal: " << value << endl;
-    });
+    std::cout << "Listening for Tick signals..." << std::endl;
 
-    // 注册信号回调
-    proxy->finishRegistration();
-
-    cout << "Listening for Tick signals..." << endl;
-
-    // 进入事件循环（阻塞，等待信号）
+    // 进入事件循环，等待信号
     connection->enterEventLoop();
 
     return 0;
