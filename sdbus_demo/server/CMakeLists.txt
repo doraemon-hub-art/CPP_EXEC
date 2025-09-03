@@ -11,5 +11,5 @@ find_package(sdbus-c++ REQUIRED)
 
 add_subdirectory(interface)
 
-# add_executable(dbus_service_demo service.cpp)
-# target_link_libraries(dbus_service PRIVATE sdbus-c++::sdbus-c++)
+add_executable(dbus_service_demo service.cpp)
+target_link_libraries(dbus_service PRIVATE sdbus-c++::sdbus-c++)
